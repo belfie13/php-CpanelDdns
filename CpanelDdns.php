@@ -15,7 +15,8 @@ require('lib/HttpRequest.php');
 /**
  * Cpanel object. For now, the only public facing method is to update the DDNS
  */
-class CpanelDdns {
+class CpanelDdns
+ {
 	private $_url;
 	private $_user;
 	private $_pass;
@@ -27,10 +28,15 @@ class CpanelDdns {
 	 * @param  [String] $domain    Your website, e.g. "example.com"
 	 * @return                     Returns nothing
 	 */
-	public function updateDdns($subdomain, $domain) {
-		if(!$this->login()) return false;
+	public function updateDdns($subdomain, $domain)
+	 {
+		if (!$this->login())
+		 {
+			return false;
+		 }
 
 		$http = new HttpRequest($this->getUrl() . $this->getToken() . "/json-api/cpanel");
+		
 		$http
 			->setHeaders("Authorization: Basic " . base64_encode($this->getUser() . ":" . $this->getPass()) . "\n\r")
 			->get(array(
@@ -44,7 +50,7 @@ class CpanelDdns {
 				"name" => $subdomain . "." . $domain . ".",
 				"ttl" => 1200,
 				"type" => "A"
-			));
+			 ));
 	}
 
 
@@ -52,7 +58,8 @@ class CpanelDdns {
 	 * Login to your cpanel.
 	 * @return [Boolean] True if the login succeeded
 	 */
-	private function login() {
+	private function login()
+	 {
 		$url = $this->getUrl();
 		$user = $this->getUser();
 		$pass = $this->getPass();
@@ -64,54 +71,68 @@ class CpanelDdns {
 		$result = $http->post(array(
 			"user" => $user,
 			"pass" => $pass
-		));
+		 ));
+		
 		$inf = $http->getCurlInfo();
 		
 
 		// Get the session
-		if(strpos($inf['url'], "cpsess")) {
+		if(strpos($inf['url'], "cpsess"))
+		 {
 			$pattern = "/.*?(\/cpsess.*?)\/.*?/is";
 			$preg_res = preg_match($pattern, $inf['url'], $cpsess);
 
 			$this->setToken($cpsess[1]);
 			return true;
-		}
+		 }
 
 		return false;
-	}
-
-	function getUrl() {
+	 }
+	//~
+	function getUrl()
+	 {
 		return $this->_url;
-	}
-	function setUrl($url) {
+	 }
+	//~
+	function setUrl($url)
+	 {
 		$this->_url = $url;
 		return $this;
-	}
-
-	function getUser() {
+	 }
+	//~
+	function getUser()
+	 {
 		return $this->_user;
-	}
-	function setUser($user) {
+	 }
+	//~
+	function setUser($user)
+	 {
 		$this->_user = $user;
 		return $this;
-	}
-
-	function getPass() {
+	 }
+	//~
+	function getPass()
+	 {
 		return $this->_pass;
-	}
-	function setPass($pass) {
+	 }
+	//~
+	function setPass($pass)
+	 {
 		$this->_pass = $pass;
 		return $this;
-	}
-
-	function getToken() {
+	 }
+	//~
+	function getToken()
+	 {
 		return $this->_token;
-	}
-	function setToken($token) {
+	 }
+	//~
+	function setToken($token)
+	 {
 		$this->_token = $token;
 		return $this;
-	}
-
+	 }
+	//~
 }
 
 ?>
