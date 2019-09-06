@@ -9,7 +9,11 @@
             --All Rights Reserved--
 
 ***********************************************/
-
+//~
+//~
+/**
+ * 
+ */
 class HttpRequest {
 	/**
 	 * An HTTP Request object.
